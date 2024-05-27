@@ -97,20 +97,12 @@ class _OfferAcceptedScreenState extends State<OfferAcceptedScreen> {
                               PrimaryButton(
                                 label: 'Schedule final walkthrough',
                                 onClick: () {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    'home',
-                                    (Route<dynamic> route) => false,
-                                  );
+                                  Navigator.pop(context);
                                 },
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    'home',
-                                    (Route<dynamic> route) => false,
-                                  );
+                                  Navigator.pop(context);
                                 },
                                 child: const Text("SKIP"),
                               ),

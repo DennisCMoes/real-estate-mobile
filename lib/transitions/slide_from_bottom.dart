@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 class SlideFromBottom extends StatefulWidget {
   final Widget child;
+
   final int durationMS;
+  final double bottomOffset;
 
   const SlideFromBottom({
     super.key,
     required this.child,
     this.durationMS = 500,
+    this.bottomOffset = 0.4,
   });
 
   @override
@@ -29,13 +32,13 @@ class _SlideFromBottomState extends State<SlideFromBottom>
     );
 
     _offsetAnimation =
-        Tween<Offset>(begin: const Offset(0.0, 0.4), end: Offset.zero).animate(
+        Tween<Offset>(begin: Offset(0.0, widget.bottomOffset), end: Offset.zero)
+            .animate(
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeInOut,
       ),
     );
-
     _controller.forward();
   }
 

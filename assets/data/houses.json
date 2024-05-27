@@ -1,0 +1,10 @@
+[
+  {
+    "image": "image",
+    "street": "street",
+    "bedrooms": 2,
+    "bathrooms": 2,
+    "sqFeet": 1230,
+    "price": 250000
+  }
+]
