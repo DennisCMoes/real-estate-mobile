@@ -39,21 +39,45 @@ class _HomeScreenState extends State<HomeScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
-                const SafeArea(
+                SafeArea(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Buying"),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Buy power"),
-                          Text("Search"),
-                          Text("Feed"),
-                          Text("Favs"),
-                          Text("Offers"),
-                        ],
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "Buying",
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                      Expanded(
+                      SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ActionChip(
+                                label: const Text("Buy power"),
+                                onPressed: () {}),
+                            const SizedBox(width: 8),
+                            ActionChip(
+                                label: const Text("Search"), onPressed: () {}),
+                            const SizedBox(width: 8),
+                            ActionChip(
+                                label: const Text("Feed"), onPressed: () {}),
+                            const SizedBox(width: 8),
+                            ActionChip(
+                                label: const Text("Favs"), onPressed: () {}),
+                            const SizedBox(width: 8),
+                            ActionChip(
+                                label: const Text("Offers"), onPressed: () {}),
+                          ],
+                        ),
+                      ),
+                      const Expanded(
                         child: MapComponent(),
                       )
                     ],
@@ -84,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           top: 8,
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
                               "12 houses in Highland Park",
@@ -92,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
+                            const SizedBox(height: 8),
                             SizedBox(
                               height: 220,
                               child: ListView.builder(
