@@ -36,13 +36,31 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: 'home',
-      routes: {
-        'home': (context) => const HomeScreen(),
-        'detail': (context) => const DetailScreen(),
-        'offer': (context) => const OfferScreen(),
-        'accepted': (context) => const OfferAcceptedScreen()
-      },
+      // routes: {
+      //   'home': (context) => const HomeScreen(),
+      //   'detail': (context) => const DetailScreen(),
+      //   'offer': (context) => const OfferScreen(),
+      //   'accepted': (context) => const OfferAcceptedScreen()
+      // },
       home: const HomeScreen(),
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name) {
+          case "home":
+            return MaterialPageRoute(builder: (context) => const HomeScreen());
+          case "detail":
+            return MaterialPageRoute(
+              builder: (context) => const DetailScreen(),
+              fullscreenDialog: true,
+            );
+          case "offer":
+            return MaterialPageRoute(builder: (context) => const OfferScreen());
+          case "accepted":
+            return MaterialPageRoute(
+                builder: (context) => const OfferAcceptedScreen());
+          default:
+            throw Exception('Invalid route: ${settings.name}');
+        }
+      },
     );
   }
 }
