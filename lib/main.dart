@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:real_estate/models/house.dart';
 import 'package:real_estate/screens/accepted.dart';
 import 'package:real_estate/screens/detail.dart';
 import 'package:real_estate/screens/home.dart';
 import 'package:real_estate/screens/offer.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final Controller controller = Get.put(Controller());
+
+  for (var i = 0; i < 10; i++) {
+    controller.addHouse(await House.fromRandom());
+  }
+
+  runApp(const GetMaterialApp(home: MyApp()));
+}
+
+class Controller extends GetxController {
+  RxList<House> houses = <House>[].obs;
+
+  addHouse(House house) => houses.add(house);
 }
 
 class MyApp extends StatelessWidget {

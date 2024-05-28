@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:real_estate/models/house.dart';
 import 'package:real_estate/models/location_model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 class MapComponent extends StatefulWidget {
-  const MapComponent({super.key});
+  final List<House> houses;
+
+  const MapComponent({super.key, required this.houses});
 
   @override
   State<MapComponent> createState() => _MapComponentState();
@@ -76,11 +79,29 @@ class _MapComponentState extends State<MapComponent> {
       currentLocation = LocationModel(
           latitude: position.latitude, longitude: position.longitude);
 
-      // currentLocation = LocationModel(latitude: 52.453223, longitude: 4.822007);
-
       mapController.move(
           LatLng(currentLocation!.latitude, currentLocation!.longitude), 15.0);
     });
+  }
+
+  double calculateTextWidth(String text, TextStyle style) {
+    final TextPainter painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr,
+    )..layout(minWidth: 0, maxWidth: double.infinity);
+
+    return painter.size.width + 10;
+  }
+
+  String formatPrice(int number) {
+    if (number >= 1000000) {
+      return '${(number / 1000000).toStringAsFixed(1)}M';
+    } else if (number >= 1000) {
+      return '${(number / 1000).toStringAsFixed(0)}k';
+    } else {
+      return number.toString();
+    }
   }
 
   @override
@@ -90,26 +111,86 @@ class _MapComponentState extends State<MapComponent> {
       options: MapOptions(
           initialCenter: LatLng(currentLocation?.latitude ?? 0.0,
               currentLocation?.longitude ?? 0.0),
-          initialZoom: 15.0),
+          initialZoom: 10.0),
       children: [
         TileLayer(
           urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
           subdomains: const ['a', 'b', 'c'],
         ),
         MarkerLayer(
-          markers: [
-            if (currentLocation != null)
-              Marker(
-                point: LatLng(
-                  currentLocation!.latitude,
-                  currentLocation!.longitude,
-                ),
-                child: const Icon(
-                  Icons.location_on,
+          markers: widget.houses.map((house) {
+            return Marker(
+              point: LatLng(
+                house.location!.latitude,
+                house.location!.longitude,
+              ),
+              width: calculateTextWidth(
+                house.price.toString(),
+                const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-          ],
-        )
+              child: Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+                shadowColor: Colors.black45,
+                elevation: 3,
+                child: InkWell(
+                  onTap: () {},
+                  child: Center(
+                    child: Text(
+                      formatPrice(house.price),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+
+        // MarkerLayer(
+        //   markers: [
+        //     if (currentLocation != null)
+        //       Marker(
+        //         point: LatLng(
+        //           currentLocation!.latitude,
+        //           currentLocation!.longitude,
+        //         ),
+        //         width: calculateTextWidth(
+        //           "200k",
+        //           const TextStyle(
+        //             fontSize: 14,
+        //             fontWeight: FontWeight.w500,
+        //           ),
+        //         ),
+        //         child: Material(
+        //           color: Colors.white,
+        //           borderRadius: BorderRadius.circular(4),
+        //           shadowColor: Colors.black45,
+        //           elevation: 3,
+        //           child: InkWell(
+        //             onTap: () {},
+        //             child: const Center(
+        //               child: Text(
+        //                 "200k",
+        //                 style: TextStyle(
+        //                   fontSize: 14,
+        //                   fontWeight: FontWeight.w500,
+        //                 ),
+        //                 overflow: TextOverflow.clip,
+        //               ),
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //   ],
+        // )
       ],
     );
   }

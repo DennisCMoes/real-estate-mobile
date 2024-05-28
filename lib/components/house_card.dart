@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:real_estate/components/dot.dart';
+import 'package:real_estate/models/house.dart';
+import 'package:intl/intl.dart';
 
 class HouseCard extends StatefulWidget {
-  const HouseCard({super.key});
+  final House house;
+
+  const HouseCard({super.key, required this.house});
 
   @override
   State<HouseCard> createState() => _HouseCardState();
 }
 
 class _HouseCardState extends State<HouseCard> {
+  final oCcy = NumberFormat("#,##0", "en_US");
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -45,28 +51,28 @@ class _HouseCardState extends State<HouseCard> {
                 ),
               ),
             ),
-            const Text(
-              "€500,000",
-              style: TextStyle(
+            Text(
+              "\$${oCcy.format(widget.house.price)}",
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text("841 Grove St"),
-            const Row(
+            Text(widget.house.street),
+            Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '3 bd',
-                  style: TextStyle(
+                  '${widget.house.bedrooms} bd',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,
                   ),
                 ),
-                Dot(),
+                const Dot(),
                 Text(
-                  '2 ba',
-                  style: TextStyle(
+                  '${widget.house.bathrooms} ba',
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,
                   ),

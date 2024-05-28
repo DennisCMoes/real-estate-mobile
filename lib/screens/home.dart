@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/instance_manager.dart';
 import 'package:real_estate/components/house_card.dart';
+import 'package:real_estate/main.dart';
 import 'package:real_estate/models/house.dart';
 import 'package:real_estate/components/map.dart';
-import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,28 +13,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late List<House> houses = [];
+  final Controller controller = Get.put(Controller());
 
   @override
   void initState() {
     super.initState();
-    loadHouseData();
-  }
-
-  Future<void> loadHouseData() async {
-    final String response =
-        await rootBundle.loadString('assets/data/houses.json');
-    final List<dynamic> data = json.decode(response);
-
-    setState(() {
-      houses = data.map((json) => House.fromJson(json)).toList();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: houses.isEmpty
+      body: controller.houses.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
@@ -77,8 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      const Expanded(
-                        child: MapComponent(),
+                      Expanded(
+                        child: MapComponent(houses: controller.houses),
                       )
                     ],
                   ),
@@ -110,9 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "12 houses in Highland Park",
-                              style: TextStyle(
+                            Text(
+                              "${controller.houses.length} houses in Highland Park",
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -120,12 +108,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 8),
                             SizedBox(
                               height: 220,
-                              child: ListView.builder(
+                              child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: houses.length,
-                                itemBuilder: (context, index) {
-                                  return const HouseCard();
-                                },
+                                itemBuilder: (context, index) =>
+                                    HouseCard(house: controller.houses[index]),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(width: 8),
+                                itemCount: controller.houses.length,
                               ),
                             ),
                           ],
