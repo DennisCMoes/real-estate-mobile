@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:real_estate/components/dot.dart';
+import 'package:real_estate/main.dart';
 import 'package:real_estate/models/house.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +15,7 @@ class HouseCard extends StatefulWidget {
 }
 
 class _HouseCardState extends State<HouseCard> {
+  Controller controller = Get.put(Controller());
   final oCcy = NumberFormat("#,##0", "en_US");
 
   @override
@@ -23,7 +26,8 @@ class _HouseCardState extends State<HouseCard> {
       clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: () {
-          Navigator.of(context).pushNamed('detail');
+          controller.selectHouse(widget.house);
+          Navigator.of(context).pushNamed('detail', arguments: widget.house);
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,7 +42,7 @@ class _HouseCardState extends State<HouseCard> {
               child: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Hero(
-                  tag: 'HouseImg',
+                  tag: "${widget.house.street.replaceAll(' ', '-')}-house",
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
@@ -55,27 +59,38 @@ class _HouseCardState extends State<HouseCard> {
               "\$${oCcy.format(widget.house.price)}",
               style: const TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            Text(widget.house.street),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${widget.house.bedrooms} bd',
+                  widget.house.street,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,
                   ),
                 ),
-                const Dot(),
-                Text(
-                  '${widget.house.bathrooms} ba',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${widget.house.bedrooms} bd',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const Dot(),
+                    Text(
+                      '${widget.house.bathrooms} ba',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

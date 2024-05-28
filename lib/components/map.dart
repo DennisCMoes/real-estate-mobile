@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:real_estate/main.dart';
 import 'package:real_estate/models/house.dart';
 import 'package:real_estate/models/location_model.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,6 +17,7 @@ class MapComponent extends StatefulWidget {
 }
 
 class _MapComponentState extends State<MapComponent> {
+  Controller controller = Get.put(Controller());
   late MapController mapController;
   LocationModel? currentLocation;
 
@@ -137,7 +140,10 @@ class _MapComponentState extends State<MapComponent> {
                 shadowColor: Colors.black45,
                 elevation: 3,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    controller.selectHouse(house);
+                    Navigator.of(context).pushNamed('detail', arguments: house);
+                  },
                   child: Center(
                     child: Text(
                       formatPrice(house.price),

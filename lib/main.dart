@@ -20,8 +20,10 @@ void main() async {
 
 class Controller extends GetxController {
   RxList<House> houses = <House>[].obs;
+  House? selectedHouse;
 
   addHouse(House house) => houses.add(house);
+  selectHouse(House house) => selectedHouse = house;
 }
 
 class MyApp extends StatelessWidget {
@@ -52,27 +54,18 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialRoute: 'home',
-      // routes: {
-      //   'home': (context) => const HomeScreen(),
-      //   'detail': (context) => const DetailScreen(),
-      //   'offer': (context) => const OfferScreen(),
-      //   'accepted': (context) => const OfferAcceptedScreen()
-      // },
-      home: const HomeScreen(),
+      routes: {
+        'home': (context) => const HomeScreen(),
+        'offer': (context) => const OfferScreen(),
+        'accepted': (context) => const OfferAcceptedScreen()
+      },
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
-          case "home":
-            return MaterialPageRoute(builder: (context) => const HomeScreen());
-          case "detail":
+          case 'detail':
             return MaterialPageRoute(
               builder: (context) => const DetailScreen(),
               fullscreenDialog: true,
             );
-          case "offer":
-            return MaterialPageRoute(builder: (context) => const OfferScreen());
-          case "accepted":
-            return MaterialPageRoute(
-                builder: (context) => const OfferAcceptedScreen());
           default:
             throw Exception('Invalid route: ${settings.name}');
         }

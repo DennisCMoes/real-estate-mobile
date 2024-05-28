@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/instance_manager.dart';
 import 'package:real_estate/components/house_card.dart';
 import 'package:real_estate/main.dart';
-import 'package:real_estate/models/house.dart';
 import 'package:real_estate/components/map.dart';
+import 'package:geocoding/geocoding.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,11 +14,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late String cityName = "";
   final Controller controller = Get.put(Controller());
 
   @override
   void initState() {
     super.initState();
+
+    getCityName();
+  }
+
+  void getCityName() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+
+    setState(() {
+      cityName = placemarks[0].locality!;
+    });
   }
 
   @override
@@ -91,29 +107,48 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).padding.bottom,
-                          left: 12,
-                          right: 12,
-                          top: 8,
+                          top: 12,
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${controller.houses.length} houses in Highland Park",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          "${controller.houses.length} houses ",
+                                      style:
+                                          const TextStyle(color: Colors.blue),
+                                    ),
+                                    TextSpan(
+                                      text: "in $cityName",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    )
+                                  ],
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 8),
                             SizedBox(
                               height: 220,
+                              width: MediaQuery.of(context).size.width,
                               child: ListView.separated(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) =>
                                     HouseCard(house: controller.houses[index]),
                                 separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 8),
+                                    const SizedBox(width: 12),
                                 itemCount: controller.houses.length,
                               ),
                             ),

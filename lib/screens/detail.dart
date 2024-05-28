@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:real_estate/components/dot.dart';
 import 'package:real_estate/components/primary_button.dart';
+import 'package:real_estate/main.dart';
+import 'package:real_estate/models/house.dart';
 import 'package:real_estate/screens/offer.dart';
 import 'package:real_estate/transitions/fade.dart';
 import 'package:real_estate/transitions/slide_from_bottom.dart';
+import 'package:intl/intl.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({super.key});
@@ -13,6 +17,8 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  Controller controller = Get.put(Controller());
+  final oCcy = NumberFormat("#,##0", "en_US");
   bool _transitionComplete = false;
 
   Route _createRoute() {
@@ -60,7 +66,8 @@ class _DetailScreenState extends State<DetailScreen> {
           child: Column(
             children: [
               Hero(
-                tag: 'HouseImg',
+                tag:
+                    "${controller.selectedHouse!.street.replaceAll(' ', '-')}-house",
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
@@ -68,6 +75,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   clipBehavior: Clip.hardEdge,
                   child: const Image(
                     image: AssetImage('assets/images/house_img.jpg'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -80,17 +88,17 @@ class _DetailScreenState extends State<DetailScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Row(
+                            Row(
                               children: [
                                 Text(
-                                  '€250,000',
-                                  style: TextStyle(
+                                  "\$${oCcy.format(controller.selectedHouse!.price)}",
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(width: 10),
-                                Text(
+                                const SizedBox(width: 10),
+                                const Text(
                                   '5 hrs ago',
                                   style: TextStyle(
                                       fontSize: 16, color: Colors.grey),
@@ -98,12 +106,13 @@ class _DetailScreenState extends State<DetailScreen> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            const Row(
+                            Row(
                               children: [
                                 Flexible(
                                   child: Text(
-                                    '841 Grove St \nLos Angeles, CA 90042',
-                                    style: TextStyle(
+                                    // '841 Grove St \nLos Angeles, CA 90042',
+                                    controller.selectedHouse!.street,
+                                    style: const TextStyle(
                                       fontSize: 28,
                                       fontWeight: FontWeight.w600,
                                       height: 1,
@@ -113,34 +122,34 @@ class _DetailScreenState extends State<DetailScreen> {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            const Row(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  '3 bd',
-                                  style: TextStyle(
+                                  '${controller.selectedHouse!.bedrooms} bd',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
                                 ),
-                                Dot(),
+                                const Dot(),
                                 Text(
-                                  '2 ba',
-                                  style: TextStyle(
+                                  '${controller.selectedHouse!.bathrooms} ba',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
                                 ),
-                                Dot(),
+                                const Dot(),
                                 Text(
-                                  '1230 ft',
-                                  style: TextStyle(
+                                  '${controller.selectedHouse!.sqFeet} ft',
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: Colors.grey,
                                   ),
                                 ),
-                                Dot(),
-                                Text(
+                                const Dot(),
+                                const Text(
                                   'single family',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w500,
