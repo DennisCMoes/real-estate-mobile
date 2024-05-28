@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late String cityName = "";
   final Controller controller = Get.put(Controller());
+  List<String> chipLabels = ["Buy power", "Search", "Feed", "Favs", "Offers"];
+  String selectedChip = "Search";
 
   @override
   void initState() {
@@ -58,27 +60,38 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ActionChip(
-                                label: const Text("Buy power"),
-                                onPressed: () {}),
-                            const SizedBox(width: 8),
-                            ActionChip(
-                                label: const Text("Search"), onPressed: () {}),
-                            const SizedBox(width: 8),
-                            ActionChip(
-                                label: const Text("Feed"), onPressed: () {}),
-                            const SizedBox(width: 8),
-                            ActionChip(
-                                label: const Text("Favs"), onPressed: () {}),
-                            const SizedBox(width: 8),
-                            ActionChip(
-                                label: const Text("Offers"), onPressed: () {}),
-                          ],
+                      SizedBox(
+                        height: 50,
+                        child: ListView.separated(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: chipLabels.length,
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: 6),
+                          itemBuilder: (context, index) => Theme(
+                            data: ThemeData(splashColor: Colors.blue[200]),
+                            child: ActionChip(
+                              label: Text(chipLabels[index]),
+                              onPressed: () {
+                                setState(() {
+                                  selectedChip = chipLabels[index];
+                                });
+                              },
+                              backgroundColor: selectedChip == chipLabels[index]
+                                  ? Colors.blue[100]
+                                  : Colors.transparent,
+                              shape: const StadiumBorder(
+                                side: BorderSide(
+                                  style: BorderStyle.none,
+                                ),
+                              ),
+                              padding: const EdgeInsets.all(0),
+                              // labelStyle: const TextStyle(color: Colors.black45),
+                              labelStyle: selectedChip == chipLabels[index]
+                                  ? TextStyle(color: Colors.blue[900])
+                                  : const TextStyle(color: Colors.black45),
+                            ),
+                          ),
                         ),
                       ),
                       Expanded(
