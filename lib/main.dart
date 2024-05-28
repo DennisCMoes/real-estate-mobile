@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:real_estate/models/house.dart';
 import 'package:real_estate/screens/accepted.dart';
 import 'package:real_estate/screens/detail.dart';
+import 'package:real_estate/screens/final_walkthrough.dart';
 import 'package:real_estate/screens/home.dart';
 import 'package:real_estate/screens/offer.dart';
 
@@ -57,7 +58,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'home': (context) => const HomeScreen(),
         'offer': (context) => const OfferScreen(),
-        'accepted': (context) => const OfferAcceptedScreen()
+        'accepted': (context) => const OfferAcceptedScreen(),
+        'final-walkthrough': (context) => const FinalWalkthroughScreen()
       },
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {

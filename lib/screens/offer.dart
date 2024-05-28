@@ -79,11 +79,21 @@ class OfferScreen extends StatelessWidget {
               ),
               const Text("Offer screen"),
               const Spacer(),
-              PrimaryButton(
-                label: 'Send offer for review',
-                onClick: () {
-                  Navigator.pushReplacement(context, _createRoute());
-                },
+              Column(
+                children: [
+                  PrimaryButton(
+                    label: 'Send offer for review',
+                    onClick: () {
+                      Navigator.pushReplacement(context, _createRoute());
+                    },
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("CANCEL"),
+                  ),
+                ],
               ),
             ],
           ),

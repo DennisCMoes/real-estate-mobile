@@ -44,6 +44,7 @@ class _HouseCardState extends State<HouseCard> {
                 child: Hero(
                   tag: "${widget.house.street.replaceAll(' ', '-')}-house",
                   child: Container(
+                    clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
                     ),

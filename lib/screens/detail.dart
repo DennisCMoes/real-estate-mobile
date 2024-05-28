@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:real_estate/components/dot.dart';
 import 'package:real_estate/components/primary_button.dart';
 import 'package:real_estate/main.dart';
-import 'package:real_estate/models/house.dart';
 import 'package:real_estate/screens/offer.dart';
 import 'package:real_estate/transitions/fade.dart';
 import 'package:real_estate/transitions/slide_from_bottom.dart';
@@ -69,10 +68,10 @@ class _DetailScreenState extends State<DetailScreen> {
                 tag:
                     "${controller.selectedHouse!.street.replaceAll(' ', '-')}-house",
                 child: Container(
+                  clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
-                  clipBehavior: Clip.hardEdge,
                   child: const Image(
                     image: AssetImage('assets/images/house_img.jpg'),
                     fit: BoxFit.cover,
@@ -86,7 +85,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: FadeWidget(
                       child: SlideFromBottom(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -159,12 +158,12 @@ class _DetailScreenState extends State<DetailScreen> {
                               ],
                             ),
                             const SizedBox(height: 16),
+                            const Spacer(),
                             PrimaryButton(
                               label: 'Make an offer',
                               onClick: () {
                                 Navigator.of(context)
                                     .pushReplacement(_createRoute());
-                                // Navigator.pushNamed(context, 'offer');
                               },
                             ),
                           ],
