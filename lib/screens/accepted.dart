@@ -97,7 +97,7 @@ class _OfferAcceptedScreenState extends State<OfferAcceptedScreen> {
                               PrimaryButton(
                                 label: 'Schedule final walkthrough',
                                 onClick: () {
-                                  Navigator.pushNamed(
+                                  Navigator.pushReplacementNamed(
                                     context,
                                     'final-walkthrough',
                                   );
